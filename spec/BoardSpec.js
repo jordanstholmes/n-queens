@@ -4,14 +4,18 @@ describe('Board', function() {
     return word[0].toUpperCase() + word.slice(1);
   };
 
-
+  // Matrix is a nested array, expectedConflicts is an array of expected types of conflicts
   var verifyConflictTypes = function(expectedConflicts, matrix) {
     // The Board() constructor will accept a matrix and build that into a (Backbone) Board object (as defined in Board.js)
     var board = new Board(matrix);
     _.map('row col rooks majorDiagonal minorDiagonal queens'.split(' '), function(conflictType) {
-      var conflictDetected = board['hasAny' + capitalize(conflictType) + 'Conflicts']();
+      var conflictDetected = board['hasAny' + capitalize(conflictType) + 'Conflicts'](); //board['hasAnyRowConflicts']
       var conflictExpected = _(expectedConflicts).contains(conflictType);
       var message = conflictExpected ? 'should' : 'should not';
+
+      if (conflictDetected !== conflictExpected) {
+        debugger;
+      }
 
       it(message + ' find a ' + conflictType + ' conflict', function() {
         expect(conflictDetected).to.be.equal(conflictExpected);
